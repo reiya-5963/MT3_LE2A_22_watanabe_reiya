@@ -70,7 +70,6 @@ public:
 		result.z = v1 * v2.z;
 		return result;
 	}
-
 	static Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 		Matrix4x4 result{};
 
@@ -551,7 +550,6 @@ public:
 
 		return result;
 	}
-	
 	static Vector3 Normalize(const Vector3& v) {
 		Vector3 result;
 		result.x = v.x / Length(v);
@@ -573,7 +571,16 @@ public:
 			return num;
 		}
 	}
+	static bool IsCollision(const Sphere& s1, const Sphere& s2) {
+		float distance = Length(Subtract(s2.center,s1.center));
 
+		if (distance <= s1.radius + s2.radius) {
+			return	true;	
+		}
+
+		return false;
+
+	}
 
 	static void DrawGrid(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix) {
 		const float kGridHalfWidth = 2.0f;
