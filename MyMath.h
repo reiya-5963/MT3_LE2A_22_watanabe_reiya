@@ -31,7 +31,10 @@ struct Segment {
 	Vector3 origin;
 	Vector3 diff;
 };
-
+struct Plane {
+	Vector3 normal;
+	float distance;
+};
 
 class MyMath {
 public:
@@ -581,7 +584,43 @@ public:
 		return false;
 
 	}
+	static bool IsCollision(const Sphere& s1, const Plane& plane) {
+		float k = std::abs(Dot(plane.normal, s1.center) - plane.distance);
 
+		if (s1.radius > k) {
+			return true;
+		}
+		return false;
+	}
+
+	static Vector3 Perpendicular(const Vector3& vector) {
+		if (vector.x != 0.0f || vector.y != 0.0f) {
+			return { -vector.y, vector.x, 0.0f };
+		}
+		return { 0.0f, -vector.z, vector.y };
+	}
+
+	static void DrawPlane(const Plane& plane, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
+		Vector3 center = Multiply(plane.distance, plane.normal);
+		Vector3 perpendiculars[4];
+		perpendiculars[0] = Normalize(Perpendicular(plane.normal));
+		perpendiculars[1] = { -perpendiculars[0].x, -perpendiculars[0].y, -perpendiculars[0].z };
+		perpendiculars[2] = Cross(plane.normal, perpendiculars[0]);
+		perpendiculars[3] = { -perpendiculars[2].x, -perpendiculars[2].y, -perpendiculars[2].z };
+
+		Vector3 points[4];
+		for (uint32_t index = 0; index < 4; ++index) {
+			Vector3 extend = Multiply(2.0f, perpendiculars[index]);
+			Vector3 point = Add(center, extend);
+			points[index] = TransformCoord(TransformCoord(point, viewProjectionMatrix), viewportMatrix);
+		}
+
+		Novice::DrawLine(int(points[0].x), int(points[0].y), int(points[3].x), int(points[3].y), color);
+		Novice::DrawLine(int(points[3].x), int(points[3].y), int(points[1].x), int(points[1].y), color);
+		Novice::DrawLine(int(points[1].x), int(points[1].y), int(points[2].x), int(points[2].y), color);
+		Novice::DrawLine(int(points[2].x), int(points[2].y), int(points[0].x), int(points[0].y), color);
+
+	}
 	static void DrawGrid(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix) {
 		const float kGridHalfWidth = 2.0f;
 		const uint32_t kSubdivision = 10;
