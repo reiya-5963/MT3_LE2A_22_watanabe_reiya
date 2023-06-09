@@ -72,6 +72,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\KamataEngine\DirectXGame\lib\KamataEngineLib\$(Configuration);C:\KamataEngine\External\DirectXTex\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>KamataEngineLib.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>xcopy C:\KamataEngine\DirectXGame\Resources .\NoviceResources /S /E /I /D /R /Y
@@ -101,6 +102,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>KamataEngineLib.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\KamataEngine\DirectXGame\lib\KamataEngineLib\$(Configuration);C:\KamataEngine\External\DirectXTex\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>xcopy C:\KamataEngine\DirectXGame\Resources .\NoviceResources /S /E /I /D /R /Y

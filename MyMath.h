@@ -2,7 +2,7 @@
 #include <cmath>
 #include <assert.h>
 
-
+//Vector3
 struct Vector3 {
 	float x;
 	float y;
@@ -12,17 +12,14 @@ struct Vector3 {
 struct Matrix4x4 {
 	float m[4][4];
 };
-
 struct Sphere {
 	Vector3 center;
 	float radius;
 };
-
 struct Line {
 	Vector3 origin;
 	Vector3 diff;
 };
-
 struct Ray {
 	Vector3 origin;
 	Vector3 diff;
@@ -35,9 +32,9 @@ struct Plane {
 	Vector3 normal;
 	float distance;
 };
-
 class MyMath {
 public:
+	//
 	static float Dot(const Vector3& v1, const Vector3& v2) {
 		float result;
 		result = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
@@ -530,7 +527,7 @@ public:
 	}
 	static Vector3 Project(const Vector3& v1, const Vector3& v2) {
 		Vector3 result{};
-			
+
 		result = Normalize(v2);
 		float a = Dot(v1, result);
 		result.x *= a;
@@ -575,10 +572,10 @@ public:
 		}
 	}
 	static bool IsCollision(const Sphere& s1, const Sphere& s2) {
-		float distance = Length(Subtract(s2.center,s1.center));
+		float distance = Length(Subtract(s2.center, s1.center));
 
 		if (distance <= s1.radius + s2.radius) {
-			return	true;	
+			return	true;
 		}
 
 		return false;
@@ -592,14 +589,56 @@ public:
 		}
 		return false;
 	}
+	static bool IsCollision(const Segment& line, const Plane& plane) {
+		float dot = Dot(plane.normal, line.diff);
 
+		if (dot == 0.0f) {
+			return false;
+		}
+
+		//
+		float t = (plane.distance - Dot(line.origin, plane.normal)) / dot;
+
+		if (0.0f < t && t < 1.0f) {
+			return true;
+		}
+		return false;
+	}
+	static bool IsCollision(const Ray& line, const Plane& plane) {
+		float dot = Dot(plane.normal, line.diff);
+
+		if (dot == 0.0f) {
+			return false;
+		}
+
+		//
+		float t = (plane.distance - Dot(line.origin, plane.normal)) / dot;
+
+		if (0.0f < t) {
+			return true;
+		}
+		return false;
+	}
+	static bool IsCollision(const Line& line, const Plane& plane) {
+		float dot = Dot(plane.normal, line.diff);
+
+		if (dot == 0.0f) {
+			return false;
+		}
+
+		//
+		//float t = (plane.distance - Dot(line.origin, plane.normal)) / dot;
+
+
+		return true;
+	}
+	//あ
 	static Vector3 Perpendicular(const Vector3& vector) {
 		if (vector.x != 0.0f || vector.y != 0.0f) {
 			return { -vector.y, vector.x, 0.0f };
 		}
 		return { 0.0f, -vector.z, vector.y };
 	}
-
 	static void DrawPlane(const Plane& plane, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
 		Vector3 center = Multiply(plane.distance, plane.normal);
 		Vector3 perpendiculars[4];
@@ -641,25 +680,18 @@ public:
 		Vector3 screenBorderVer[2]{};
 		Vector3 screenStripeVer[2]{};
 
-
 		for (uint32_t xIndex = 0; xIndex <= kSubdivision; ++xIndex) {
-
-
 			localBorderVer[0] = { -kGridHalfWidth, 0.0f, kGridEvery * (float(xIndex) - 5) };
 			localBorderVer[1] = { kGridHalfWidth, 0.0f, kGridEvery * (float(xIndex) - 5) };
 
 			localStripeVer[0] = { kGridEvery * (int(xIndex) - 5) , 0.0f, -kGridHalfWidth };
 			localStripeVer[1] = { kGridEvery * (int(xIndex) - 5) , 0.0f, kGridHalfWidth };
 
-
 			Vector3 ndcBorderStart = TransformCoord(localBorderVer[0], viewProjectionMatrix);
 			Vector3 ndcBorderEnd = TransformCoord(localBorderVer[1], viewProjectionMatrix);
 
 			Vector3 ndcStripeStart = TransformCoord(localStripeVer[0], viewProjectionMatrix);
 			Vector3 ndcStripeEnd = TransformCoord(localStripeVer[1], viewProjectionMatrix);
-
-
-
 
 			screenBorderVer[0] = TransformCoord(ndcBorderStart, viewportMatrix);
 			screenBorderVer[1] = TransformCoord(ndcBorderEnd, viewportMatrix);
@@ -733,4 +765,27 @@ public:
 		}
 	}
 
+	static void DrawLine(const Segment& seg, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
+		Vector3 start = TransformCoord(seg.origin, viewProjectionMatrix);
+		Vector3 screenStart = TransformCoord(start, viewportMatrix);
+		Vector3 end = TransformCoord(Add(seg.origin, seg.diff), viewProjectionMatrix);
+		Vector3 screenEnd = TransformCoord(end, viewportMatrix);
+		Novice::DrawLine(int(screenStart.x), int(screenStart.y), int(screenEnd.x), int(screenEnd.y), color);
+	}
+
+	static void DrawLine(const Ray& ray, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
+		Vector3 start = TransformCoord(ray.origin, viewProjectionMatrix);
+		Vector3 screenStart = TransformCoord(start, viewportMatrix);
+		Vector3 end = TransformCoord(Add(ray.origin, ray.diff), viewProjectionMatrix);
+		Vector3 screenEnd = TransformCoord(end, viewportMatrix);
+		Novice::DrawLine(int(screenStart.x), int(screenStart.y), int(screenEnd.x), int(screenEnd.y), color);
+	}
+
+	static void DrawLine(const Line& line, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
+		Vector3 start = TransformCoord(line.origin, viewProjectionMatrix);
+		Vector3 screenStart = TransformCoord(start, viewportMatrix);
+		Vector3 end = TransformCoord(Add(line.origin, line.diff), viewProjectionMatrix);
+		Vector3 screenEnd = TransformCoord(end, viewportMatrix);
+		Novice::DrawLine(int(screenStart.x), int(screenStart.y), int(screenEnd.x), int(screenEnd.y), color);
+	}
 };
