@@ -25,9 +25,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		.min{-0.5f, -0.5f, -0.5f},
 		.max{ 0.0f, 0.0f, 0.0f}
 	};
-	Sphere sphere{
-		{1.0f, 1.0f, 1.0f},
-		32.0f
+	AABB aabb2{
+		.min{0.2f, 0.2f, 0.2f},
+		.max{ 1.0f, 1.0f, 1.0f}
 	};
 
 
@@ -96,7 +96,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		viewportMatrix = MyMath::MakeViewPortMatrix(0, 0, float(kWindowWidth), float(kWindowHeight), 0.0f, 1.0f);
 
 		//当たり判定
-		if (MyMath::IsCollision(aabb1, sphere)) {
+		if (MyMath::IsCollision(aabb1, aabb2)) {
 			colorS1 = RED;
 		}
 		else {
@@ -119,7 +119,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//各描画
 		MyDraw::DrawAABB(aabb1, worldViewProjectionMatrix, viewportMatrix, colorS1);
-		MyDraw::DrawShere(sphere, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		MyDraw::DrawAABB(aabb2, worldViewProjectionMatrix, viewportMatrix, colorS2);
 
 
 
@@ -130,9 +130,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		ImGui::DragFloat3("AABB1min", &aabb1.min.x, 0.1f, -1.0f, 5.0f);
 		ImGui::DragFloat3("AABB1max", &aabb1.max.x, 0.1f, -1.0f, 5.0f);
-
-		ImGui::DragFloat3("sphereC", &sphere.center.x, 0.1f, -1.0f, 5.0f);
-		ImGui::DragFloat("sphereR", &sphere.radius, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("AABB2min", &aabb2.min.x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("AABB2max", &aabb2.max.x, 0.1f, -1.0f, 5.0f);
 		ImGui::End();
 
 		///
