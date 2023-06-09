@@ -151,3 +151,17 @@ void MyDraw::DrawLine(const Line& seg, const Matrix4x4& viewProjectionMatrix, co
 	Vector3 screenEnd = MyMath::TransformCoord(end, viewportMatrix);
 	Novice::DrawLine(int(screenStart.x), int(screenStart.y), int(screenEnd.x), int(screenEnd.y), color);
 }
+void MyDraw::DrawTriangle(const Triangle& triangle, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
+	Vector3 vers[3]{};
+	Vector3 screenVers[3]{};
+
+	for (int i = 0; i < 3; i++) {
+		vers[i] = MyMath::TransformCoord(triangle.vertices[i], viewProjectionMatrix);
+
+		screenVers[i] = MyMath::TransformCoord(vers[i], viewportMatrix);
+
+	}
+
+	Novice::DrawTriangle(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[1].x), int(screenVers[1].y), int(screenVers[2].x), int(screenVers[2].y), color, kFillModeWireFrame);
+
+}

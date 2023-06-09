@@ -41,3 +41,7 @@ struct Plane final {
 	Vector3 normal;	//!< 法線
 	float distance;	//!< 距離
 };
+
+struct Triangle {
+	Vector3 vertices[3]; //!< 頂点(3個)
+};

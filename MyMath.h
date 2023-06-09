@@ -246,4 +246,12 @@ public:
 	/// <returns></returns>
 	static bool IsCollision(const Line& line, const Plane& plane);
 
+	/// <summary>
+	/// 三角形と線分の当たり判定
+	/// </summary>
+	/// <param name="triangle">三角形</param>
+	/// <param name="segment">線分</param>
+	/// <returns></returns>
+	static bool IsCollision(const Triangle& triangle, const Segment& segment);
+
 };

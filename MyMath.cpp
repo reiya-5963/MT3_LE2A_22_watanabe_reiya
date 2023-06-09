@@ -615,4 +615,52 @@ bool MyMath::IsCollision(const Line& line, const Plane& plane) {
 
 	return true;
 }
+bool MyMath::IsCollision(const Triangle& triangle, const Segment& segment) {
+	Plane plane{};
+	plane.normal =
+		MyMath::Normalize(
+			MyMath::Cross(
+				MyMath::Subtract(triangle.vertices[1], triangle.vertices[0]),
+				MyMath::Subtract(triangle.vertices[2], triangle.vertices[1])
+			)
+		);
+
+	plane.distance = MyMath::Dot(triangle.vertices[0], plane.normal);
+	
+	float dot = Dot(plane.normal, segment.diff);
+
+	if (dot == 0.0f) {
+		return false;
+	}
+	float t = (plane.distance - Dot(segment.origin, plane.normal)) / dot;
+
+	if (0.0f < t && t < 1.0f) {
+		Vector3 p = MyMath::Add(segment.origin, MyMath::Multiply(t, segment.diff));
+
+
+		Vector3 cross01 = MyMath::Cross(
+			MyMath::Subtract(triangle.vertices[1], triangle.vertices[0]),
+			MyMath::Subtract(p, triangle.vertices[1])
+		);
+		Vector3 cross12 = MyMath::Cross(
+			MyMath::Subtract(triangle.vertices[2], triangle.vertices[1]),
+			MyMath::Subtract(p, triangle.vertices[2])
+		);
+		Vector3 cross20 = MyMath::Cross(
+			MyMath::Subtract(triangle.vertices[0], triangle.vertices[2]),
+			MyMath::Subtract(p, triangle.vertices[0])
+		);
+
+
+		if (MyMath::Dot(cross01, plane.normal) >= 0.0f &&
+			MyMath::Dot(cross12, plane.normal) >= 0.0f &&
+			MyMath::Dot(cross20, plane.normal) >= 0.0f) {
+			return true;
+		}
+
+	}
+	
+	return false;
+
+}
 

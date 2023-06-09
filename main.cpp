@@ -30,10 +30,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		{1.0f, 1.0f, 1.0f}
 	};
 	//平面
-	Plane plane{
-		{1.0f, 1.0f, 1.0f},
-		1.0f
-	};
+	Triangle triangle;
+	triangle.vertices[0] = {0.0f, 1.0f, 0.0f};
+	triangle.vertices[1] = { 1.0f, 0.0f, 0.0f };
+	triangle.vertices[2] = { -1.0f, 0.0f, 0.0f };
+
+
 	//色
 	uint32_t colorS1 = WHITE;
 	uint32_t colorS2 = WHITE;
@@ -55,6 +57,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
+		if (keys[DIK_W]) {
+			cameraTranslate.z += 0.1f;
+		}
+		if (keys[DIK_S]) {
+			cameraTranslate.z -= 0.1f;
+		}
+		if (keys[DIK_A]) {
+			cameraTranslate.x -= 0.1f;
+		}
+		if (keys[DIK_D]) {
+			cameraTranslate.x += 0.1f;
+		}
+		if (keys[DIK_Q]) {
+			cameraRotate.y += 0.1f;
+		}
+		if (keys[DIK_E]) {
+			cameraRotate.y -= 0.1f;
+		}
+
 
 		//諸々の変換
 		Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix({ 1.0f, 1.0f, 1.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
@@ -65,12 +86,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Matrix4x4 viewportMatrix = MyMath::MakeViewPortMatrix(0, 0, float(kWindowWidth), float(kWindowHeight), 0.0f, 1.0f);
 
 		//当たり判定
-		if (MyMath::IsCollision(segment, plane)) {
+		if (MyMath::IsCollision(triangle, segment)) {
 			colorS1 = RED;
 		}
 		else {
 			colorS1 = WHITE;
 		}
+
+		
 
 		///
 		/// ↑更新処理ここまで
@@ -85,7 +108,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//各描画
 		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS1);
-		MyDraw::DrawPlane(plane, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		MyDraw::DrawTriangle(triangle, worldViewProjectionMatrix, viewportMatrix, colorS2);
 		MyDraw::DrawGrid(worldViewProjectionMatrix, viewportMatrix);
 
 
@@ -95,9 +118,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		ImGui::DragFloat3("cameraRot", &cameraRotate.x, 0.1f, -50.0f, 50.0f);
 		ImGui::DragFloat3("segmentOrigin", &segment.origin.x, 0.1f, -1.0f, 1.0f);
 		ImGui::DragFloat3("segmentDiff", &segment.diff.x, 0.1f, -1.0f, 1.0f);
-		ImGui::DragFloat("planeDistance", &plane.distance, 0.1f, -1.0f, 5.0f);
-		ImGui::DragFloat3("planeNormal", &plane.normal.x, 0.1f, -1.0f, 1.0f);
-		plane.normal = MyMath::Normalize(plane.normal);
+		ImGui::DragFloat3("triVer0", &triangle.vertices[0].x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("triVer1", &triangle.vertices[1].x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("triVer2", &triangle.vertices[2].x, 0.1f, -1.0f, 5.0f);
+
+
+		//ImGui::DragFloat3("planeNormal", &plane.normal.x, 0.1f, -1.0f, 1.0f);
+		//plane.normal = MyMath::Normalize(plane.normal);
 		ImGui::End();
 
 		///
