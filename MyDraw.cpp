@@ -26,7 +26,6 @@ void MyDraw::DrawPlane(const Plane& plane, const Matrix4x4& viewProjectionMatrix
 	Novice::DrawLine(int(points[2].x), int(points[2].y), int(points[0].x), int(points[0].y), color);
 
 }
-
 void MyDraw::DrawGrid(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix) {
 	const float kGridHalfWidth = 2.0f;
 	const uint32_t kSubdivision = 10;
@@ -91,7 +90,6 @@ void MyDraw::DrawGrid(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& vi
 	}
 
 }
-
 void MyDraw::DrawShere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
 	const uint32_t kSubdivision = 10;
 	const float kLonEvery = (2 * 3.14f) / kSubdivision;
@@ -132,8 +130,6 @@ void MyDraw::DrawShere(const Sphere& sphere, const Matrix4x4& viewProjectionMatr
 		}
 	}
 }
-
-
 void MyDraw::DrawLine(const Segment& seg, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
 	Vector3 start = MyMath::TransformCoord(seg.origin, viewProjectionMatrix);
 	Vector3 screenStart = MyMath::TransformCoord(start, viewportMatrix);
@@ -148,7 +144,6 @@ void MyDraw::DrawLine(const Ray& seg, const Matrix4x4& viewProjectionMatrix, con
 	Vector3 screenEnd = MyMath::TransformCoord(end, viewportMatrix);
 	Novice::DrawLine(int(screenStart.x), int(screenStart.y), int(screenEnd.x), int(screenEnd.y), color);
 }
-
 void MyDraw::DrawLine(const Line& seg, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
 	Vector3 start = MyMath::TransformCoord(seg.origin, viewProjectionMatrix);
 	Vector3 screenStart = MyMath::TransformCoord(start, viewportMatrix);
