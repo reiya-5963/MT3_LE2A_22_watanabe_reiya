@@ -1,5 +1,6 @@
 #include <Novice.h>
 #include "MyMath.h"
+#include "MyDraw.h"
 #include "ImGuiManager.h"
 
 const char kWindowTitle[] = "MT3_LE2A_22_ワタナベレイヤ";
@@ -75,9 +76,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↑更新処理ここまで
 		///
 
-		//
-		MyMath::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS1);
-		MyMath::DrawPlane(plane, worldViewProjectionMatrix, viewportMatrix, colorS2);
 
 
 		///
@@ -85,11 +83,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		
 
+		//各描画
+		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS1);
+		MyDraw::DrawPlane(plane, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		MyDraw::DrawGrid(worldViewProjectionMatrix, viewportMatrix);
 
-		MyMath::DrawGrid(worldViewProjectionMatrix, viewportMatrix);
 
-
-
+		//デバッグ
 		ImGui::Begin("Debug");
 		ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
 		ImGui::DragFloat3("cameraRot", &cameraRotate.x, 0.1f, -50.0f, 50.0f);
