@@ -68,4 +68,13 @@ public:
 	/// <param name="viewportMatrix">ビューポート行列</param>
 	/// <param name="color">色</param>
 	static void DrawTriangle(const Triangle& triangle, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color);
+
+	/// <summary>
+	/// AABBの描画
+	/// </summary>
+	/// <param name="aabb">AABB(四角形)</param>
+	/// <param name="viewProjectionMatrix"></param>
+	/// <param name="viewportMatrix"></param>
+	/// <param name="color"></param>
+	static void DrawAABB(const AABB& aabb, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color);
 };

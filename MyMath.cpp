@@ -1,7 +1,7 @@
 #include "MyMath.h"
 #include <cmath>
 #include <assert.h>
-
+#include <algorithm>
 
 float MyMath::Dot(const Vector3& v1, const Vector3& v2) {
 	float result;
@@ -15,17 +15,17 @@ float MyMath::Length(const Vector3& v) {
 
 	return result;
 }
-float MyMath::Clamp(float num, float max, float min) {
-	if (num > max) {
-		return max;
-	}
-	else if (num < min) {
-		return min;
-	}
-	else {
-		return num;
-	}
-}
+//float MyMath::Clamp(float num, float max, float min) {
+//	if (num > max) {
+//		return max;
+//	}
+//	else if (num < min) {
+//		return min;
+//	}
+//	else {
+//		return num;
+//	}
+//}
 
 
 
@@ -85,7 +85,7 @@ Vector3 MyMath::ClosestPoint(const Vector3& point, const Segment& segment) {
 	float t = Dot(Subtract(point, segment.origin), segment.diff) / std::powf(Length(segment.diff), 2.0f);
 	Vector3 result = Add(segment.origin, Multiply(t, segment.diff));
 
-	t = Clamp(t, 1.0f, 0.0f);
+	t = std::clamp(t, 1.0f, 0.0f);
 
 
 	return result;
@@ -664,3 +664,32 @@ bool MyMath::IsCollision(const Triangle& triangle, const Segment& segment) {
 
 }
 
+bool MyMath::IsCollision(const AABB& aabb1, const AABB& aabb2) {
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&
+		(aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) &&
+		(aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)
+		) {
+
+		return true;
+
+	}
+
+	return false;
+
+}
+
+bool MyMath::IsCollision(const AABB& aabb, const Sphere& sphere) {
+	Vector3 clossestPoint{ 
+		std::clamp(sphere.center.x, aabb.min.x, aabb.max.x),
+		std::clamp(sphere.center.y, aabb.min.y, aabb.max.y),
+		std::clamp(sphere.center.z, aabb.min.z, aabb.max.z)
+	};
+
+	float distance = Length(Subtract(clossestPoint, sphere.center));
+	if (distance <= sphere.radius) {
+		return true;
+	}
+
+	return false;
+
+}

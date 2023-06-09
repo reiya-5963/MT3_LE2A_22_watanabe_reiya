@@ -29,7 +29,7 @@ public:
 	/// <param name="max"></param>
 	/// <param name="min"></param>
 	/// <returns></returns>
-	static float Clamp(float num, float max, float min);
+//	static float Clamp(float num, float max, float min);
 
 	/// <summary>
 	/// ベクトル同士の加算
@@ -253,5 +253,22 @@ public:
 	/// <param name="segment">線分</param>
 	/// <returns></returns>
 	static bool IsCollision(const Triangle& triangle, const Segment& segment);
+
+	/// <summary>
+	/// AABBとAABBの当たり判定
+	/// </summary>
+	/// <param name="aabb1">AABB1</param>
+	/// <param name="aabb2">AABB2</param>
+	/// <returns></returns>
+	static bool IsCollision(const AABB& aabb1, const AABB& aabb2);
+
+
+	/// <summary>
+	/// AABBと球の当たり判定
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="sphere">球</param>
+	/// <returns></returns>
+	static bool IsCollision(const AABB& aabb, const Sphere& sphere);
 
 };
