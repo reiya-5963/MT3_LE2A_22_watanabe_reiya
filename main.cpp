@@ -27,7 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	};
 	Sphere sphere{
 		{1.0f, 1.0f, 1.0f},
-		32.0f
+		0.1f
 	};
 
 
