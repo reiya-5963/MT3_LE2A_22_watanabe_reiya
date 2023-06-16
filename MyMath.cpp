@@ -552,8 +552,6 @@ Matrix4x4 MyMath::MakeIdentity4x4() {
 	return result;
 }
 
-
-
 bool MyMath::IsCollision(const Sphere& s1, const Sphere& s2) {
 	float distance = Length(Subtract(s2.center, s1.center));
 
@@ -691,5 +689,10 @@ bool MyMath::IsCollision(const AABB& aabb, const Sphere& sphere) {
 	}
 
 	return false;
+
+}
+
+bool MyMath::IsCollision(const AABB& aabb, const Segment& segment) {
+	
 
 }

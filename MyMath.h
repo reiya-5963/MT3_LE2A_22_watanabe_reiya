@@ -271,4 +271,14 @@ public:
 	/// <returns></returns>
 	static bool IsCollision(const AABB& aabb, const Sphere& sphere);
 
+
+	/// <summary>
+	///  AABBと線分の当たり判定
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="segment">線分</param>
+	/// <returns></returns>
+	static bool IsCollision(const AABB& aabb, const Segment& segment);
+
+
 };

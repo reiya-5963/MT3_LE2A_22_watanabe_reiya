@@ -25,9 +25,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		.min{-0.5f, -0.5f, -0.5f},
 		.max{ 0.0f, 0.0f, 0.0f}
 	};
-	Sphere sphere{
-		{1.0f, 1.0f, 1.0f},
-		32.0f
+	Segment segment{
+	
+	
 	};
 
 
@@ -96,7 +96,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		viewportMatrix = MyMath::MakeViewPortMatrix(0, 0, float(kWindowWidth), float(kWindowHeight), 0.0f, 1.0f);
 
 		//当たり判定
-		if (MyMath::IsCollision(aabb1, sphere)) {
+		if (MyMath::IsCollision(aabb1, segment)) {
 			colorS1 = RED;
 		}
 		else {
@@ -119,7 +119,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//各描画
 		MyDraw::DrawAABB(aabb1, worldViewProjectionMatrix, viewportMatrix, colorS1);
-		MyDraw::DrawShere(sphere, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS2);
 
 
 
