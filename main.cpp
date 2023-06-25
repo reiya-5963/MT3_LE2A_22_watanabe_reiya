@@ -23,11 +23,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//平面
 	AABB aabb1{
 		.min{-0.5f, -0.5f, -0.5f},
-		.max{ 0.0f, 0.0f, 0.0f}
+		.max{ 0.5f, 0.5f, 0.5f}
 	};
 	Segment segment{
-	
-	
+		.origin{-0.7f, 0.3f, 0.0f},
+		.diff{2.0f, -0.5f, 0.0f}
 	};
 
 
@@ -60,9 +60,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 		
-		Vector3 move{};
 		Matrix4x4 trans = MyMath::MakeTranslateMatrix(cameraTranslate);
-
+		Vector3 move{};
+		if (keys[DIK_SPACE]) {
+			move.y += 0.1f;
+		}
+		if (keys[DIK_LCONTROL]) {
+			move.y -= 0.1f;
+		}
 		if (keys[DIK_W]) {
 			move.z += 0.1f;
 		}
@@ -130,9 +135,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		ImGui::DragFloat3("AABB1min", &aabb1.min.x, 0.1f, -1.0f, 5.0f);
 		ImGui::DragFloat3("AABB1max", &aabb1.max.x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("SegO", &segment.origin.x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("SegD", &segment.diff.x, 0.1f, -1.0f, 5.0f);
 
-		ImGui::DragFloat3("sphereC", &sphere.center.x, 0.1f, -1.0f, 5.0f);
-		ImGui::DragFloat("sphereR", &sphere.radius, 0.1f, -1.0f, 5.0f);
+		//ImGui::DragFloat3("sphereC", &sphere.center.x, 0.1f, -1.0f, 5.0f);
+		//ImGui::DragFloat("sphereR", &sphere.radius, 0.1f, -1.0f, 5.0f);
 		ImGui::End();
 
 		///

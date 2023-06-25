@@ -552,6 +552,27 @@ Matrix4x4 MyMath::MakeIdentity4x4() {
 	return result;
 }
 
+float MyMath::Mymax(float a, float b) {
+	if (a > b) {
+		return a;
+	}
+	else if (a < b) {
+		return b;
+	}
+	return a;
+}
+
+float MyMath::Mymin(float a, float b) {
+	if (a < b) {
+		return a;
+	}
+	else if (a > b) {
+		return b;
+	}
+	return a;
+}
+
+
 bool MyMath::IsCollision(const Sphere& s1, const Sphere& s2) {
 	float distance = Length(Subtract(s2.center, s1.center));
 
@@ -693,6 +714,78 @@ bool MyMath::IsCollision(const AABB& aabb, const Sphere& sphere) {
 }
 
 bool MyMath::IsCollision(const AABB& aabb, const Segment& segment) {
-	
+	/*enum {
+		NEAR,
+		FAR
+	};
 
+	enum {
+
+	};*/
+	
+	Plane xMin;
+	Plane xMAx;
+
+	Plane yMin;
+	Plane yMax;
+
+	Plane zMin;
+	Plane zMax;
+
+
+	xMin.normal = { 1, 0, 0 };
+	xMin.distance = aabb.min.x;
+	xMAx.normal = { 1, 0, 0 };
+	xMAx.distance = aabb.max.x;
+
+	yMin.normal = { 0, 1, 0 };
+	yMin.distance = aabb.min.y;
+
+	yMax.normal = { 0, 1, 0 };
+	yMax.distance = aabb.max.y;
+
+	zMin.normal = { 0, 0, 1 };
+	zMin.distance = aabb.min.z;
+
+	zMax.normal = { 0, 0, 1 };
+	zMax.distance = aabb.max.z;
+
+	float dot = Dot(xMin.normal, segment.diff);
+	float tMin = (xMin.distance - Dot(segment.origin, xMin.normal)) / dot;
+	dot = Dot(xMAx.normal, segment.diff);
+	float tMax = (xMAx.distance - Dot(segment.origin, xMAx.normal)) / dot;
+
+	float tNearX = std::min(tMin, tMax);
+	float tFarX = std::max(tMin, tMax);
+
+
+	dot = Dot(yMin.normal, segment.diff);
+	tMin = (yMin.distance - Dot(segment.origin, yMin.normal)) / dot;
+	dot = Dot(yMax.normal, segment.diff);
+	tMax = (yMax.distance - Dot(segment.origin, yMax.normal)) / dot;
+
+	float tNearY = std::min(tMin, tMax);
+	float tFarY = std::max(tMin, tMax);
+
+	dot = Dot(zMin.normal, segment.diff);
+	tMin = (zMin.distance - Dot(segment.origin, zMin.normal)) / dot;
+	dot = Dot(zMax.normal, segment.diff);
+	tMax = (zMax.distance - Dot(segment.origin, zMax.normal)) / dot;
+
+	float tNearZ = std::min(tMin, tMax);
+	float tFarZ = std::max(tMin, tMax);
+
+
+	float tNear = std::max(std::max(tNearX, tNearY), tNearZ);
+	float tFar = std::min(std::min(tFarX, tFarY), tFarZ);
+
+	//float tmin = tNearX;
+	//float tmax = tFarX;
+	if (tNear <= tFar) {
+		if ((tNear < 1.0f) && (0.0f < tFar)) {
+			return true;
+		}
+	}
+
+	return false;
 }

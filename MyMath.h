@@ -207,6 +207,22 @@ public:
 	static Matrix4x4 MakeIdentity4x4();
 
 	/// <summary>
+	/// より大きい値を返す
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <returns></returns>
+	static float Mymax(float a, float b);
+
+	/// <summary>
+	/// より小さい値を返す
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <returns></returns>
+	static float Mymin(float a, float b);
+
+	/// <summary>
 	/// 球と球の当たり判定
 	/// </summary>
 	/// <param name="s1">球1</param>
