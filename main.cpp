@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		.min{-0.5f, -0.5f, -0.5f},
 		.max{ 0.5f, 0.5f, 0.5f}
 	};
-	Ray segment{
+	Segment segment{
 		.origin{-0.7f, 0.3f, 0.0f},
 		.diff{2.0f, -0.5f, 0.0f}
 	};
