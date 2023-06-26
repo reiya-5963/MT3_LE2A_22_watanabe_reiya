@@ -239,6 +239,16 @@ public:
 	static bool IsCollision(const Sphere& s1, const Plane& plane);
 
 	/// <summary>
+	/// 線と平面
+	/// </summary>
+	/// <param name="plane"></param>
+	/// <param name="segment"></param>
+	/// <param name="line"></param>
+	/// <param name="ray"></param>
+	/// <returns></returns>
+	//static bool IsCollision(const Plane& plane, Segment* segment = nullptr, Line* line = nullptr, Ray* ray = nullptr);
+
+	/// <summary>
 	/// 線分と平面の当たり判定
 	/// </summary>
 	/// <param name="line">線分</param>
@@ -295,6 +305,22 @@ public:
 	/// <param name="segment">線分</param>
 	/// <returns></returns>
 	static bool IsCollision(const AABB& aabb, const Segment& segment);
+
+	/// <summary>
+	///  AABBと直線の当たり判定
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="line">直線</param>
+	/// <returns></returns>
+	static bool IsCollision(const AABB& aabb, const Line& line);
+
+	/// <summary>
+	///  AABBと半直線の当たり判定
+	/// </summary>
+	/// <param name="aabb">AABB</param>
+	/// <param name="ray">半直線</param>
+	/// <returns></returns>
+	static bool IsCollision(const AABB& aabb, const Ray& ray);
 
 
 };
