@@ -205,3 +205,97 @@ void MyDraw::DrawAABB(const AABB& aabb, const Matrix4x4& viewProjectionMatrix, c
 	Novice::DrawLine(int(screenVers[6].x), int(screenVers[6].y), int(screenVers[7].x), int(screenVers[7].y), color);
 
 }
+
+void MyDraw::DrawOBB(const OBB& obb, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
+	//float sizeX = MyMath::Dot(obb.size, MyMath::Normalize(obb.orientations[0]));
+	//float sizeY = MyMath::Dot(obb.size, MyMath::Normalize(obb.orientations[1]));
+	//float sizeZ = MyMath::Dot(obb.size, MyMath::Normalize(obb.orientations[2]));
+
+	/*AABB aabb{};
+	aabb.max.x =*/
+
+	Vector3 vers[8]{};
+	vers[0] = { obb.center.x + obb.size.x, obb.center.y + obb.size.y, obb.center.z + obb.size.z };
+	vers[1] = { obb.center.x + obb.size.x, obb.center.y - obb.size.y, obb.center.z + obb.size.z };
+	vers[2] = { obb.center.x - obb.size.x, obb.center.y + obb.size.y, obb.center.z + obb.size.z };
+	vers[3] = { obb.center.x - obb.size.x, obb.center.y - obb.size.y, obb.center.z + obb.size.z };
+	vers[4] = { obb.center.x + obb.size.x, obb.center.y + obb.size.y, obb.center.z - obb.size.z };
+	vers[5] = { obb.center.x + obb.size.x, obb.center.y - obb.size.y, obb.center.z - obb.size.z };
+	vers[6] = { obb.center.x - obb.size.x, obb.center.y + obb.size.y, obb.center.z - obb.size.z };
+	vers[7] = { obb.center.x - obb.size.x, obb.center.y - obb.size.y, obb.center.z - obb.size.z };
+
+	//vers[1] = { obb.center.x + sizeX, obb.center.y + sizeY, obb.center.z + sizeZ };
+	//vers[1] = { obb.center.x + sizeX, obb.center.y - sizeY, obb.center.z + sizeZ };
+	//vers[2] = { obb.center.x - sizeX, obb.center.y + sizeY, obb.center.z + sizeZ };
+	//vers[3] = { obb.center.x - sizeX, obb.center.y - sizeY, obb.center.z + sizeZ };
+	//vers[4] = { obb.center.x + sizeX, obb.center.y + sizeY, obb.center.z - sizeZ };
+	//vers[5] = { obb.center.x + sizeX, obb.center.y - sizeY, obb.center.z - sizeZ };
+	//vers[6] = { obb.center.x - sizeX, obb.center.y + sizeY, obb.center.z - sizeZ };
+	//vers[7] = { obb.center.x - sizeX, obb.center.y - sizeY, obb.center.z - sizeZ };
+
+
+	Matrix4x4 rotate{};
+	rotate.m[0][0] = obb.orientations[0].x;
+	rotate.m[0][1] = obb.orientations[1].x;
+	rotate.m[0][2] = obb.orientations[2].x;
+	rotate.m[0][3] = 0;
+
+	rotate.m[1][0] = obb.orientations[0].y;
+	rotate.m[1][1] = obb.orientations[1].y;
+	rotate.m[1][2] = obb.orientations[2].y;
+	rotate.m[1][3] = 0;
+
+	rotate.m[2][0] = obb.orientations[0].z;
+	rotate.m[2][1] = obb.orientations[1].z;
+	rotate.m[2][2] = obb.orientations[2].z;
+	rotate.m[2][3] = 0;
+
+	rotate.m[3][0] = 1;
+	rotate.m[3][1] = 1;
+	rotate.m[3][2] = 1;
+	rotate.m[3][3] = 1;
+
+
+	Vector3 screenVers[8]{};
+	Matrix4x4 wo = MyMath::Multiply(viewProjectionMatrix, rotate);
+	for (int i = 0; i < 8; i++) {
+		vers[i] = MyMath::TransformCoord(vers[i], wo);
+		screenVers[i] = MyMath::TransformCoord(vers[i], viewportMatrix);
+
+	}
+
+
+
+	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[1].x), int(screenVers[1].y), color);
+	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[2].x), int(screenVers[2].y), color);
+	Novice::DrawLine(int(screenVers[1].x), int(screenVers[1].y), int(screenVers[3].x), int(screenVers[3].y), color);
+	Novice::DrawLine(int(screenVers[2].x), int(screenVers[2].y), int(screenVers[3].x), int(screenVers[3].y), color);
+
+
+
+	Novice::DrawLine(int(screenVers[4].x), int(screenVers[4].y), int(screenVers[5].x), int(screenVers[5].y), color);
+	Novice::DrawLine(int(screenVers[4].x), int(screenVers[4].y), int(screenVers[6].x), int(screenVers[6].y), color);
+	Novice::DrawLine(int(screenVers[5].x), int(screenVers[5].y), int(screenVers[7].x), int(screenVers[7].y), color);
+	Novice::DrawLine(int(screenVers[6].x), int(screenVers[6].y), int(screenVers[7].x), int(screenVers[7].y), color);
+
+
+	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[4].x), int(screenVers[4].y), color);
+	Novice::DrawLine(int(screenVers[1].x), int(screenVers[1].y), int(screenVers[5].x), int(screenVers[5].y), color);
+	Novice::DrawLine(int(screenVers[2].x), int(screenVers[2].y), int(screenVers[6].x), int(screenVers[6].y), color);
+	Novice::DrawLine(int(screenVers[3].x), int(screenVers[3].y), int(screenVers[7].x), int(screenVers[7].y), color);
+
+
+	//Novice::DrawLine(int(screenVers[1].x), int(screenVers[1].y), int(screenVers[6].x), int(screenVers[6].y), color);
+
+	//Novice::DrawLine(int(screenVers[2].x), int(screenVers[2].y), int(screenVers[4].x), int(screenVers[4].y), color);
+	//Novice::DrawLine(int(screenVers[2].x), int(screenVers[2].y), int(screenVers[5].x), int(screenVers[5].y), color);
+
+	//Novice::DrawLine(int(screenVers[3].x), int(screenVers[3].y), int(screenVers[4].x), int(screenVers[4].y), color);
+	//Novice::DrawLine(int(screenVers[3].x), int(screenVers[3].y), int(screenVers[6].x), int(screenVers[6].y), color);
+
+	//Novice::DrawLine(int(screenVers[4].x), int(screenVers[4].y), int(screenVers[7].x), int(screenVers[7].y), color);
+	//Novice::DrawLine(int(screenVers[5].x), int(screenVers[5].y), int(screenVers[7].x), int(screenVers[7].y), color);
+	//Novice::DrawLine(int(screenVers[6].x), int(screenVers[6].y), int(screenVers[7].x), int(screenVers[7].y), color);
+
+
+}

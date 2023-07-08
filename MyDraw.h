@@ -77,4 +77,13 @@ public:
 	/// <param name="viewportMatrix"></param>
 	/// <param name="color"></param>
 	static void DrawAABB(const AABB& aabb, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color);
+
+	/// <summary>
+	/// OBBの描画
+	/// </summary>
+	/// <param name="obb">OBB</param>
+	/// <param name="viewProjectionMatrix"></param>
+	/// <param name="viewportMatrix"></param>
+	/// <param name="color"></param>
+	static void DrawOBB(const OBB& obb, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color);
 };

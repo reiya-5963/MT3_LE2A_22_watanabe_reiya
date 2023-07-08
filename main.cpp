@@ -19,15 +19,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//カメラ関係
 	Vector3 cameraTranslate{ 0.0f, 1.9f, -6.49f };
 	Vector3 cameraRotate{ 0.26f, 0.0f, 0.0f };
-	
+
 	//平面
-	AABB aabb1{
-		.min{-0.5f, -0.5f, -0.5f},
-		.max{ 0.5f, 0.5f, 0.5f}
+	Vector3 rotate{ 0.0f, 0.0f, 0.0f };
+
+	OBB obb{
+		.center{-1.0f, 0.0f, 0.0f},
+		.orientations = {{1.0f, 0.0f, 0.0f},
+						 {0.0f, 1.0f,0.0f},
+						 {0.0f, 0.0f, 1.0f}},
+		.size{0.5f, 0.5f, 0.5f}
 	};
-	Segment segment{
-		.origin{-0.7f, 0.3f, 0.0f},
-		.diff{2.0f, -0.5f, 0.0f}
+
+
+	Sphere sphere{
+		.center{0.0f, 0.0f, 0.0f},
+		.radius{0.5f}
 	};
 
 
@@ -59,7 +66,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
-		
+
 		Matrix4x4 trans = MyMath::MakeTranslateMatrix(cameraTranslate);
 		Vector3 move{};
 		if (keys[DIK_SPACE]) {
@@ -100,13 +107,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		worldViewProjectionMatrix = MyMath::Multiply(worldMatrix, MyMath::Multiply(viewMatrix, projectionMatrix));
 		viewportMatrix = MyMath::MakeViewPortMatrix(0, 0, float(kWindowWidth), float(kWindowHeight), 0.0f, 1.0f);
 
+
+		Matrix4x4 rotateMatrix = MyMath::Multiply(MyMath::MakeRotateXMatrix(rotate.x), MyMath::Multiply(MyMath::MakeRotateYMatrix(rotate.y), MyMath::MakeRotateZMatrix(rotate.z)));
+
+		obb.orientations[0].x = rotateMatrix.m[0][0];
+		obb.orientations[0].y = rotateMatrix.m[0][1];
+		obb.orientations[0].z = rotateMatrix.m[0][2];
+
+		obb.orientations[1].x = rotateMatrix.m[1][0];
+		obb.orientations[1].y = rotateMatrix.m[1][1];
+		obb.orientations[1].z = rotateMatrix.m[1][2];
+
+		obb.orientations[2].x = rotateMatrix.m[2][0];
+		obb.orientations[2].y = rotateMatrix.m[2][1];
+		obb.orientations[2].z = rotateMatrix.m[2][2];
+
+
+
 		//当たり判定
-		if (MyMath::IsCollision(aabb1, segment)) {
+	/*	if (MyMath::IsCollision(aabb1, segment)) {
 			colorS1 = RED;
 		}
 		else {
 			colorS1 = WHITE;
-		}
+		}*/
 
 
 
@@ -123,20 +147,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		MyDraw::DrawGrid(worldViewProjectionMatrix, viewportMatrix);
 
 		//各描画
-		MyDraw::DrawAABB(aabb1, worldViewProjectionMatrix, viewportMatrix, colorS1);
-		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		MyDraw::DrawShere(sphere, worldViewProjectionMatrix, viewportMatrix, colorS1);
+	
+		
+		MyDraw::DrawOBB(obb, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		//MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS2);
 
 
 
 		//デバッグ
 		ImGui::Begin("Debug");
-		ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
+		ImGui::SliderFloat3("abb.center", &obb.center.x, -1.0f, 1.0f);
+		ImGui::SliderAngle("rotateX", &rotate.x);
+		ImGui::SliderAngle("rotateY", &rotate.y);
+		ImGui::SliderAngle("rotateZ", &rotate.z);
+		ImGui::SliderFloat3("abb.orientations[0]", &obb.orientations[0].x, -1.0f, 1.0f);
+		ImGui::SliderFloat3("abb.orientations[1]", &obb.orientations[1].x, -1.0f, 1.0f);
+		ImGui::SliderFloat3("abb.orientations[2]", &obb.orientations[2].x, -1.0f, 1.0f);
+		ImGui::SliderFloat3("abb.size", &obb.size.x, -1.0f, 1.0f);
+		ImGui::SliderFloat3("sphere.center", &sphere.center.x, -1.0f, 1.0f);
+		ImGui::SliderFloat("sphere.radius", &sphere.radius, -1.0f, 1.0f);
+
+
+		/*ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
 		ImGui::DragFloat3("cameraRot", &cameraRotate.x, 0.1f, -50.0f, 50.0f);
 
 		ImGui::DragFloat3("AABB1min", &aabb1.min.x, 0.1f, -1.0f, 5.0f);
 		ImGui::DragFloat3("AABB1max", &aabb1.max.x, 0.1f, -1.0f, 5.0f);
 		ImGui::DragFloat3("SegO", &segment.origin.x, 0.1f, -1.0f, 5.0f);
-		ImGui::DragFloat3("SegD", &segment.diff.x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("SegD", &segment.diff.x, 0.1f, -1.0f, 5.0f);*/
 
 		//ImGui::DragFloat3("sphereC", &sphere.center.x, 0.1f, -1.0f, 5.0f);
 		//ImGui::DragFloat("sphereR", &sphere.radius, 0.1f, -1.0f, 5.0f);
