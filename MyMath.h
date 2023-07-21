@@ -324,7 +324,7 @@ public:
 
 	static Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
-	static void DrawBezier(const Vector3& controlPoint0, )
+	
 
 
 };
