@@ -20,14 +20,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Vector3 cameraTranslate{ 0.0f, 1.9f, -6.49f };
 	Vector3 cameraRotate{ 0.26f, 0.0f, 0.0f };
 	
-	//平面
-	AABB aabb1{
-		.min{-0.5f, -0.5f, -0.5f},
-		.max{ 0.5f, 0.5f, 0.5f}
-	};
-	Segment segment{
-		.origin{-0.7f, 0.3f, 0.0f},
-		.diff{2.0f, -0.5f, 0.0f}
+	//
+	Vector3 controlPoints[3] = {
+		{-0.8f, 0.58f, 1.0f},
+		{1.76f, 1.0f, -0.3f},
+		{0.94f, -0.7f, 2.3f},
 	};
 
 
@@ -101,12 +98,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		viewportMatrix = MyMath::MakeViewPortMatrix(0, 0, float(kWindowWidth), float(kWindowHeight), 0.0f, 1.0f);
 
 		//当たり判定
-		if (MyMath::IsCollision(aabb1, segment)) {
-			colorS1 = RED;
-		}
-		else {
-			colorS1 = WHITE;
-		}
+		//if (MyMath::IsCollision(aabb1, segment)) {
+		//	colorS1 = RED;
+		//}
+		//else {
+		//	colorS1 = WHITE;
+		//}
 
 
 
@@ -123,20 +120,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		MyDraw::DrawGrid(worldViewProjectionMatrix, viewportMatrix);
 
 		//各描画
-		MyDraw::DrawAABB(aabb1, worldViewProjectionMatrix, viewportMatrix, colorS1);
-		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS2);
+		/*MyDraw::DrawAABB(aabb1, worldViewProjectionMatrix, viewportMatrix, colorS1);
+		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS2);*/
 
 
 
 		//デバッグ
 		ImGui::Begin("Debug");
-		ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
+		/*ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
 		ImGui::DragFloat3("cameraRot", &cameraRotate.x, 0.1f, -50.0f, 50.0f);
 
 		ImGui::DragFloat3("AABB1min", &aabb1.min.x, 0.1f, -1.0f, 5.0f);
 		ImGui::DragFloat3("AABB1max", &aabb1.max.x, 0.1f, -1.0f, 5.0f);
 		ImGui::DragFloat3("SegO", &segment.origin.x, 0.1f, -1.0f, 5.0f);
-		ImGui::DragFloat3("SegD", &segment.diff.x, 0.1f, -1.0f, 5.0f);
+		ImGui::DragFloat3("SegD", &segment.diff.x, 0.1f, -1.0f, 5.0f);*/
 
 		//ImGui::DragFloat3("sphereC", &sphere.center.x, 0.1f, -1.0f, 5.0f);
 		//ImGui::DragFloat("sphereR", &sphere.radius, 0.1f, -1.0f, 5.0f);

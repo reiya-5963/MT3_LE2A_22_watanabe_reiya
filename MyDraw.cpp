@@ -135,6 +135,7 @@ void MyDraw::DrawLine(const Segment& seg, const Matrix4x4& viewProjectionMatrix,
 	Vector3 screenStart = MyMath::TransformCoord(start, viewportMatrix);
 	Vector3 end = MyMath::TransformCoord(MyMath::Add(seg.origin, seg.diff), viewProjectionMatrix);
 	Vector3 screenEnd = MyMath::TransformCoord(end, viewportMatrix);
+
 	Novice::DrawLine(int(screenStart.x), int(screenStart.y), int(screenEnd.x), int(screenEnd.y), color);
 }
 void MyDraw::DrawLine(const Ray& seg, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportMatrix, uint32_t color) {
@@ -203,5 +204,30 @@ void MyDraw::DrawAABB(const AABB& aabb, const Matrix4x4& viewProjectionMatrix, c
 	Novice::DrawLine(int(screenVers[4].x), int(screenVers[4].y), int(screenVers[7].x), int(screenVers[7].y), color);
 	Novice::DrawLine(int(screenVers[5].x), int(screenVers[5].y), int(screenVers[7].x), int(screenVers[7].y), color);
 	Novice::DrawLine(int(screenVers[6].x), int(screenVers[6].y), int(screenVers[7].x), int(screenVers[7].y), color);
+
+
+}
+
+
+void MyDraw::DrawBezier(
+	const Vector3& controlPoint0,
+	const Vector3& controlPoint1,
+	const Vector3& controlPoint2,
+	const Matrix4x4& viewProjectionMatrix,
+	const Matrix4x4& viewportMatrix,
+	uint32_t color) {
+
+
+	Vector3 screenVers[8]{};
+
+	for (int i = 0; i < 8; i++) {
+		vers[i] = MyMath::TransformCoord(vers[i], viewProjectionMatrix);
+		screenVers[i] = MyMath::TransformCoord(vers[i], viewportMatrix);
+
+	}
+
+	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[1].x), int(screenVers[1].y), color);
+	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[2].x), int(screenVers[2].y), color);
+	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[3].x), int(screenVers[3].y), color);
 
 }
