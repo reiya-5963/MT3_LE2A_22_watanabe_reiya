@@ -216,18 +216,43 @@ void MyDraw::DrawBezier(
 	const Matrix4x4& viewProjectionMatrix,
 	const Matrix4x4& viewportMatrix,
 	uint32_t color) {
+	float t = 0.0f;
+
+	Vector3 p0p1 = MyMath::Lerp(controlPoint0, controlPoint1, t);
+	Vector3 p1p2 = MyMath::Lerp(controlPoint1, controlPoint2, t);
+	Vector3 p = MyMath::Lerp(p0p1, p1p2, t);
+	Vector3 preP = p;
+
+	Sphere sphere[3];
+	sphere[0].center = controlPoint0;
+	sphere[1].center = controlPoint1;
+	sphere[2].center = controlPoint2;
+	sphere[0].radius = 0.05f;
+	sphere[1].radius = 0.05f;
+	sphere[2].radius = 0.05f;
+
+	DrawShere(sphere[0], viewProjectionMatrix, viewportMatrix, 0x000000ff);
+	DrawShere(sphere[1], viewProjectionMatrix, viewportMatrix, 0x000000ff);
+	DrawShere(sphere[2], viewProjectionMatrix, viewportMatrix, 0x000000ff);
+
+	for (; t < 1.0f; t += 0.01f) {
+		p0p1 = MyMath::Lerp(controlPoint0, controlPoint1, t);
+		p1p2 = MyMath::Lerp(controlPoint1, controlPoint2, t);
+		p = MyMath::Lerp(p0p1, p1p2, t);
+
+		Vector3 screenVers[2]{};
+		Vector3 localP = MyMath::TransformCoord(p, viewProjectionMatrix);
+		screenVers[0] = MyMath::TransformCoord(localP, viewportMatrix);
+		
+		Vector3 localPreP = MyMath::TransformCoord(preP, viewProjectionMatrix);
+		screenVers[1] = MyMath::TransformCoord(localPreP, viewportMatrix);
 
 
-	Vector3 screenVers[8]{};
-
-	for (int i = 0; i < 8; i++) {
-		vers[i] = MyMath::TransformCoord(vers[i], viewProjectionMatrix);
-		screenVers[i] = MyMath::TransformCoord(vers[i], viewportMatrix);
+		Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[1].x), int(screenVers[1].y), color);
+		preP = p;
 
 	}
 
-	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[1].x), int(screenVers[1].y), color);
-	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[2].x), int(screenVers[2].y), color);
-	Novice::DrawLine(int(screenVers[0].x), int(screenVers[0].y), int(screenVers[3].x), int(screenVers[3].y), color);
+
 
 }

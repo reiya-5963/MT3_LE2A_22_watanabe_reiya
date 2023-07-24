@@ -29,8 +29,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 	//色
-	uint32_t colorS1 = WHITE;
-	uint32_t colorS2 = WHITE;
+	uint32_t color = WHITE;
+	//uint32_t colorS2 = WHITE;
 
 
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix({ 1.0f, 1.0f, 1.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
@@ -122,11 +122,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//各描画
 		/*MyDraw::DrawAABB(aabb1, worldViewProjectionMatrix, viewportMatrix, colorS1);
 		MyDraw::DrawLine(segment, worldViewProjectionMatrix, viewportMatrix, colorS2);*/
-
+		MyDraw::DrawBezier(controlPoints[0], controlPoints[1], controlPoints[2], worldViewProjectionMatrix, viewportMatrix, color);
 
 
 		//デバッグ
-		ImGui::Begin("Debug");
+		ImGui::Begin("Debug");		
+		ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
+		ImGui::DragFloat3("cameraRot", &cameraRotate.x, 0.1f, -50.0f, 50.0f);
+
+		ImGui::DragFloat3("controlPoint0", &controlPoints[0].x, 0.1f, -50.0f, 50.0f);
+		ImGui::DragFloat3("controlPoint1", &controlPoints[1].x, 0.1f, -50.0f, 50.0f);
+		ImGui::DragFloat3("controlPoint2", &controlPoints[2].x, 0.1f, -50.0f, 50.0f);
+
 		/*ImGui::DragFloat3("cameraTRa", &cameraTranslate.x, 0.1f, -50.0f, 50.0f);
 		ImGui::DragFloat3("cameraRot", &cameraRotate.x, 0.1f, -50.0f, 50.0f);
 
