@@ -743,7 +743,7 @@ bool MyMath::IsCollision(const AABB& aabb, const Segment& segment) {
 	Plane yMax;
 
 	Plane zMin;
-	Plane zMax:;
+	Plane zMax;
 
 	xMin.normal = { 1, 0, 0 };
 	xMin.distance = aabb.min.x;
